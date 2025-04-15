@@ -7,6 +7,10 @@ body {
   background: #A1683A;
 }
 
+.nav-link {
+  color: #EED2CC;
+}
+
 .navbar-toggler.collapsed {
   position: absolute;
   right: 20%;
