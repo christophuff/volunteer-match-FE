@@ -1,29 +1,47 @@
 'use client';
 
- // any component that uses useAuth needs this because if a component directly imports useAuth, it needs to be a client component since useAuth uses React hooks.
-
-import { Button } from 'react-bootstrap';
-import { signOut } from '@/utils/auth'; // anything in the src dir, you can use the @ instead of relative paths
-import { useAuth } from '@/utils/context/authContext';
+import React, { useEffect, useState } from 'react';
+import { getCauses } from '../api/causeData';
+import CauseCard from '../components/CauseCard';
+import { getOrganizations } from '../api/organizationData';
+import OrganizationCard from '../components/OrganizationCard';
 
 function Home() {
-  const { user } = useAuth();
+  const [causes, setCauses] = useState([]);
+  const [organizations, setOrganizations] = useState([]);
+
+  const getAllTheCauses = () => {
+    getCauses().then(setCauses);
+  };
+
+  const getAllTheOrganizations = () => {
+    getOrganizations().then(setOrganizations);
+  };
+
+  useEffect(() => {
+    getAllTheCauses();
+    getAllTheOrganizations();
+  }, []);
 
   return (
-    <div
-      className="text-center d-flex flex-column justify-content-center align-content-center"
-      style={{
-        height: '90vh',
-        padding: '30px',
-        maxWidth: '400px',
-        margin: '0 auto',
-      }}
-    >
-      <h1>Hello {user.displayName}! </h1>
-      <p>Click the button below to logout!</p>
-      <Button variant="danger" type="button" size="lg" className="copy-btn" onClick={signOut}>
-        Sign Out
-      </Button>
+    <div>
+      <div>
+        <h1>Popular Causes and Organizations</h1>
+      </div>
+      <div id="causes">
+        <h3>Causes</h3>
+        <div className="d-flex flex-row" style={{ overflow: 'auto' }}>
+          {causes.map((cause) => (
+            <CauseCard key={cause.firebaseKey} causeObj={cause} onUpdate={getAllTheCauses} />
+          ))}
+        </div>
+        <h3>Organizations</h3>
+        <div className="d-flex flex-row" style={{ overflow: 'auto' }}>
+          {organizations.map((organization) => (
+            <OrganizationCard key={organization.firebaseKey} organizationObj={organization} onUpdate={getAllTheOrganizations} />
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
