@@ -2,3 +2,42 @@ body {
   background: black;
   color: white;
 }
+
+.navbar {
+  background: #A1683A;
+}
+
+.navbar-toggler.collapsed {
+  position: absolute;
+  right: 20%;
+  border: 2px solid #EED2CC;
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='%23EED2CC' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+}
+
+.logo-img {
+  filter: drop-shadow(2px 2px 2px black);
+}
+
+.logo-1-span {
+  margin-top: 3px;
+  margin-left: 2px;
+  font-weight: 600;
+  color: #EED2CC;
+  filter: drop-shadow(2px 2px 2px black);
+}
+
+.logo-2-span {
+  margin-top: 3px;
+  font-weight: 800;
+  color: #6C9A8B;
+  filter: drop-shadow(2px 2px 2px black);
+}
