@@ -35,4 +35,23 @@ const createOrganization = (payload) =>
       .catch(reject);
   });
 
-export { getOrganizations, createOrganization };
+const getOrganizationsByCause = (causeFirebaseKey) =>
+  new Promise((resolve, reject) => {
+    fetch(`${endpoint}/organizations.json?orderBy="cause_id"&equalTo="${causeFirebaseKey}"`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data) {
+          resolve(Object.values(data));
+        } else {
+          resolve([]);
+        }
+      })
+      .catch(reject);
+  });
+
+export { getOrganizations, createOrganization, getOrganizationsByCause };

@@ -28,7 +28,7 @@ function Home() {
       <div>
         <h1>Popular Causes and Organizations</h1>
       </div>
-      <div id="causes">
+      <div>
         <h3>Causes</h3>
         <div className="d-flex flex-row" style={{ overflow: 'auto' }}>
           {causes.map((cause) => (
