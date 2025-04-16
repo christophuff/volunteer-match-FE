@@ -8,7 +8,7 @@ import Link from 'next/link';
 function CauseCard({ causeObj }) {
   return (
     <Card style={{ width: '18rem', minWidth: '18rem', margin: '10px' }}>
-      <Card.Img variant="top" src={causeObj.logo} alt={causeObj.name} style={{ height: '400px' }} />
+      <Card.Img variant="top" src={causeObj.logo} alt={causeObj.name} style={{ height: '250px', objectFit: 'cover' }} />
       <Card.Body>
         <Card.Title>{causeObj.name}</Card.Title>
         <Card.Text>{causeObj.description}</Card.Text>
