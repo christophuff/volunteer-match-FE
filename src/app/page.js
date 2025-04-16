@@ -26,16 +26,16 @@ function Home() {
   return (
     <div>
       <div>
-        <h1>Popular Causes and Organizations</h1>
+        <h1 className="text-center mt-3">Popular Causes and Organizations</h1>
       </div>
       <div id="causes">
-        <h3>Causes</h3>
+        <h3 className="text-center mt-3">Causes</h3>
         <div className="d-flex flex-row" style={{ overflow: 'auto' }}>
           {causes.map((cause) => (
             <CauseCard key={cause.firebaseKey} causeObj={cause} onUpdate={getAllTheCauses} />
           ))}
         </div>
-        <h3>Organizations</h3>
+        <h3 className="text-center mt-5">Organizations</h3>
         <div className="d-flex flex-row" style={{ overflow: 'auto' }}>
           {organizations.map((organization) => (
             <OrganizationCard key={organization.firebaseKey} organizationObj={organization} onUpdate={getAllTheOrganizations} />

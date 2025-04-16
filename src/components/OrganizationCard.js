@@ -12,7 +12,7 @@ function OrganizationCard({ organizationObj }) {
       <Card.Body>
         <Card.Title>{organizationObj.name}</Card.Title>
         <Card.Text>{organizationObj.description}</Card.Text>
-        <Link href={`/cause/${organizationObj.firebaseKey}`} class="stretched-link" passHref>
+        <Link href={`/organizations/${organizationObj.firebaseKey}`} className="stretched-link" passHref>
           <p> </p>
         </Link>
       </Card.Body>
