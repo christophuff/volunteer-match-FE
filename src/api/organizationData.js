@@ -48,6 +48,25 @@ const getSingleOrganization = (firebaseKey) =>
       .catch(reject);
   });
 
+const getOrganizationsByCause = (causeFirebaseKey) =>
+  new Promise((resolve, reject) => {
+    fetch(`${endpoint}/organizations.json?orderBy="cause_id"&equalTo="${causeFirebaseKey}"`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data) {
+          resolve(Object.values(data));
+        } else {
+          resolve([]);
+        }
+      })
+      .catch(reject);
+  });
+
 const toggleFollowOrganization = (firebaseKey, currentValue) =>
   new Promise((resolve, reject) => {
     fetch(`${endpoint}/organizations/${firebaseKey}.json`, {
@@ -72,10 +91,15 @@ const getFollowedOrganizations = () =>
     })
       .then((response) => response.json())
       .then((data) => {
+        if (data) {
+          resolve(Object.values(data));
+        } else {
+          resolve([]);
+        }
         const followed = Object.values(data).filter((item) => item.isFollowing);
         resolve(followed);
       })
       .catch(reject);
   });
 
-export { getOrganizations, createOrganization, getSingleOrganization, toggleFollowOrganization, getFollowedOrganizations };
+export { getOrganizations, createOrganization, getOrganizationsByCause, getSingleOrganization, toggleFollowOrganization, getFollowedOrganizations };

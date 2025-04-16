@@ -35,4 +35,17 @@ const createCauses = (payload) =>
       .catch(reject);
   });
 
-export { getCauses, createCauses };
+const viewCauseDetails = (causeFirebaseKey) =>
+  new Promise((resolve, reject) => {
+    fetch(`${endpoint}/causes/${causeFirebaseKey}.json`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => resolve(data))
+      .catch(reject);
+  });
+
+export { getCauses, createCauses, viewCauseDetails };
