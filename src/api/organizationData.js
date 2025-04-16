@@ -35,4 +35,47 @@ const createOrganization = (payload) =>
       .catch(reject);
   });
 
-export { getOrganizations, createOrganization };
+const getSingleOrganization = (firebaseKey) =>
+  new Promise((resolve, reject) => {
+    fetch(`${endpoint}/organizations/${firebaseKey}.json`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => resolve(data))
+      .catch(reject);
+  });
+
+const toggleFollowOrganization = (firebaseKey, currentValue) =>
+  new Promise((resolve, reject) => {
+    fetch(`${endpoint}/organizations/${firebaseKey}.json`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ isFollowing: !currentValue }),
+    })
+      .then((response) => response.json())
+      .then(resolve)
+      .catch(reject);
+  });
+
+const getFollowedOrganizations = () =>
+  new Promise((resolve, reject) => {
+    fetch(`${endpoint}/organizations.json`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const followed = Object.values(data).filter((item) => item.isFollowing);
+        resolve(followed);
+      })
+      .catch(reject);
+  });
+
+export { getOrganizations, createOrganization, getSingleOrganization, toggleFollowOrganization, getFollowedOrganizations };
