@@ -29,13 +29,13 @@ export default function ViewCause({ params }) {
   return (
     <div>
       <div>
-        <h1>{causeDetails.name}</h1>
+        <h1 className="text-center mt-3">{causeDetails.name}</h1>
       </div>
-      <div>
-        <img className="fit-picture" src={causeDetails.logo} width={500} height={500} alt="" />
+      <div className="d-flex justify-content-center">
+        <img className="fit-picture object-fit-cover" src={causeDetails.logo} width={500} height={500} alt="" />
       </div>
-      <h3>Associated Organizations</h3>
-      <div className="d-flex flex-row" style={{ overflow: 'auto' }}>
+      <h3 className="text-center mt-3">Associated Organizations</h3>
+      <div className="d-flex flex-row justify-content-center" style={{ overflow: 'auto' }}>
         {organizations.map((organization) => (
           <OrganizationCard key={organization.firebaseKey} organizationObj={organization} onUpdate={getAllTheOrganizations} />
         ))}

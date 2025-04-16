@@ -8,7 +8,7 @@ import Link from 'next/link';
 function OrganizationCard({ organizationObj }) {
   return (
     <Card style={{ width: '18rem', minWidth: '18rem', margin: '10px' }}>
-      <Card.Img variant="top" src={organizationObj.image} alt={organizationObj.name} style={{ height: '400px' }} />
+      <Card.Img variant="top" src={organizationObj.image} alt={organizationObj.name} style={{ height: '250px', objectFit: 'cover' }} />
       <Card.Body>
         <Card.Title>{organizationObj.name}</Card.Title>
         <Card.Text>{organizationObj.description}</Card.Text>
