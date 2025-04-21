@@ -4,7 +4,7 @@ const endpoint = clientCredentials.databaseURL;
 
 const getCauses = () =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/causes.json`, {
+    fetch(`${endpoint}/causes`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -35,9 +35,9 @@ const createCauses = (payload) =>
       .catch(reject);
   });
 
-const viewCauseDetails = (causeFirebaseKey) =>
+const viewCauseDetails = (id) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/causes/${causeFirebaseKey}.json`, {
+    fetch(`${endpoint}/causes/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

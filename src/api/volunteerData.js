@@ -4,7 +4,7 @@ const endpoint = clientCredentials.databaseURL;
 
 const getVolunteers = () =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/volunteers.json`, {
+    fetch(`${endpoint}/volunteers`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -23,7 +23,7 @@ const getVolunteers = () =>
 
 const createVolunteer = (payload) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/volunteers.json`, {
+    fetch(`${endpoint}/volunteers`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
