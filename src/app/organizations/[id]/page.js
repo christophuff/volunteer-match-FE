@@ -7,16 +7,16 @@ import { getSingleOrganization, toggleFollowOrganization } from '../../../api/or
 
 export default function ViewOrganization({ params }) {
   const [orgDetails, setOrgDetails] = useState(null);
-  const { firebaseKey } = params;
+  const { id } = params;
 
   useEffect(() => {
-    getSingleOrganization(firebaseKey).then(setOrgDetails);
-  }, [firebaseKey]);
+    getSingleOrganization(id).then(setOrgDetails);
+  }, [id]);
 
   const handleJoinToggle = () => {
     const updatedFollowStatus = !orgDetails.isFollowing;
 
-    toggleFollowOrganization(orgDetails.firebaseKey, orgDetails.isFollowing).then(() => {
+    toggleFollowOrganization(orgDetails.id, orgDetails.isFollowing).then(() => {
       setOrgDetails((prev) => ({
         ...prev,
         isFollowing: updatedFollowStatus,
@@ -29,7 +29,7 @@ export default function ViewOrganization({ params }) {
   return (
     <div className="org-container">
       {/* Organization Image */}
-      <div>{orgDetails.image && <Image src={orgDetails.image} alt={orgDetails.name || 'Organization'} width={400} height={300} style={{ objectFit: 'cover' }} />}</div>
+      <div>{orgDetails.imageURL && <Image src={orgDetails.imageURL} alt={orgDetails.name || 'Organization'} width={400} height={300} style={{ objectFit: 'cover' }} />}</div>
 
       {/* Organization Details */}
       <div>
@@ -46,6 +46,6 @@ export default function ViewOrganization({ params }) {
 
 ViewOrganization.propTypes = {
   params: PropTypes.shape({
-    firebaseKey: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
   }).isRequired,
 };

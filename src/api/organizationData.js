@@ -4,7 +4,7 @@ const endpoint = clientCredentials.databaseURL;
 
 const getOrganizations = () =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/organizations.json`, {
+    fetch(`${endpoint}/organizations`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -23,7 +23,7 @@ const getOrganizations = () =>
 
 const createOrganization = (payload) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/organizations.json`, {
+    fetch(`${endpoint}/organizations`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -35,9 +35,9 @@ const createOrganization = (payload) =>
       .catch(reject);
   });
 
-const getSingleOrganization = (firebaseKey) =>
+const getSingleOrganization = (id) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/organizations/${firebaseKey}.json`, {
+    fetch(`${endpoint}/organizations/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -48,9 +48,9 @@ const getSingleOrganization = (firebaseKey) =>
       .catch(reject);
   });
 
-const getOrganizationsByCause = (causeFirebaseKey) =>
+const getOrganizationsByCause = (causeId) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/organizations.json?orderBy="cause_id"&equalTo="${causeFirebaseKey}"`, {
+    fetch(`${endpoint}/organizations?orderBy="causeId"&equalTo=${causeId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -67,9 +67,9 @@ const getOrganizationsByCause = (causeFirebaseKey) =>
       .catch(reject);
   });
 
-const toggleFollowOrganization = (firebaseKey, currentValue) =>
+const toggleFollowOrganization = (id, currentValue) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/organizations/${firebaseKey}.json`, {
+    fetch(`${endpoint}/organizations/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -83,7 +83,7 @@ const toggleFollowOrganization = (firebaseKey, currentValue) =>
 
 const getFollowedOrganizations = () =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/organizations.json`, {
+    fetch(`${endpoint}/organizations`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

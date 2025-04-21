@@ -1,17 +1,17 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { getCauses } from '../api/causeData';
-import CauseCard from '../components/CauseCard';
-import { getOrganizations } from '../api/organizationData';
-import OrganizationCard from '../components/OrganizationCard';
+import { getOrganizations } from '../../api/organizationData';
+import OrganizationCard from '../../components/OrganizationCard';
+import { getVolunteers } from '../../api/volunteerData';
+import VolunteerCard from '../../components/VolunteerCard';
 
 function Home() {
-  const [causes, setCauses] = useState([]);
+  const [volunteers, setVolunteers] = useState([]);
   const [organizations, setOrganizations] = useState([]);
 
-  const getAllTheCauses = () => {
-    getCauses().then(setCauses);
+  const getAllTheVolunteers = () => {
+    getVolunteers().then(setVolunteers);
   };
 
   const getAllTheOrganizations = () => {
@@ -19,22 +19,22 @@ function Home() {
   };
 
   useEffect(() => {
-    getAllTheCauses();
+    getAllTheVolunteers();
     getAllTheOrganizations();
   }, []);
 
   return (
     <div>
       <div className="org-container">
-        <h1 className="text-center mt-3">Popular Causes and Organizations</h1>
+        <h1 className="text-center mt-3">Connect with Volunteers and Organizations</h1>
       </div>
       <div>
         <div style={{ color: '#000000' }}>
-          <h2 className="text-center mt-3">Causes</h2>
+          <h2 className="text-center mt-3">Volunteers</h2>
         </div>
         <div className="d-flex flex-row" style={{ overflow: 'auto' }}>
-          {causes.map((cause) => (
-            <CauseCard key={cause.id} causeObj={cause} onUpdate={getAllTheCauses} />
+          {volunteers.map((volunteer) => (
+            <VolunteerCard key={volunteer.firebaseKey} causeObj={volunteer} onUpdate={getAllTheVolunteers} />
           ))}
         </div>
         <div style={{ color: '#000000' }}>
@@ -42,7 +42,7 @@ function Home() {
         </div>
         <div className="d-flex flex-row" style={{ overflow: 'auto' }}>
           {organizations.map((organization) => (
-            <OrganizationCard key={organization.id} organizationObj={organization} onUpdate={getAllTheOrganizations} />
+            <OrganizationCard key={organization.firebaseKey} organizationObj={organization} onUpdate={getAllTheOrganizations} />
           ))}
         </div>
       </div>
