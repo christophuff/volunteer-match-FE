@@ -6,7 +6,7 @@ import OrganizationCard from '../../components/OrganizationCard';
 import { getVolunteers } from '../../api/volunteerData';
 import VolunteerCard from '../../components/VolunteerCard';
 
-function Home() {
+export default function ViewConnect() {
   const [volunteers, setVolunteers] = useState([]);
   const [organizations, setOrganizations] = useState([]);
 
@@ -34,7 +34,7 @@ function Home() {
         </div>
         <div className="d-flex flex-row" style={{ overflow: 'auto' }}>
           {volunteers.map((volunteer) => (
-            <VolunteerCard key={volunteer.firebaseKey} causeObj={volunteer} onUpdate={getAllTheVolunteers} />
+            <VolunteerCard key={volunteer.id} causeObj={volunteer} onUpdate={getAllTheVolunteers} />
           ))}
         </div>
         <div style={{ color: '#000000' }}>
@@ -42,12 +42,10 @@ function Home() {
         </div>
         <div className="d-flex flex-row" style={{ overflow: 'auto' }}>
           {organizations.map((organization) => (
-            <OrganizationCard key={organization.firebaseKey} organizationObj={organization} onUpdate={getAllTheOrganizations} />
+            <OrganizationCard key={organization.id} organizationObj={organization} onUpdate={getAllTheOrganizations} />
           ))}
         </div>
       </div>
     </div>
   );
 }
-
-export default Home;
