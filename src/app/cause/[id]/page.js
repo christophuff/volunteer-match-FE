@@ -3,7 +3,7 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { Image } from 'react-bootstrap';
-import { getOrganizations } from '../../../api/organizationData';
+import { getOrganizationsByCause } from '../../../api/organizationData';
 import OrganizationCard from '../../../components/OrganizationCard';
 import { viewCauseDetails } from '../../../api/causeData';
 
@@ -18,7 +18,7 @@ export default function ViewCause({ params }) {
   };
 
   const getFilteredOrganizations = () => {
-    getOrganizations().then(setOrganizations);
+    getOrganizationsByCause(id).then(setOrganizations);
   };
 
   useEffect(() => {
