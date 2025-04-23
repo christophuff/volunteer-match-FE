@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { Button, Image } from 'react-bootstrap';
 import PropTypes from 'prop-types';
@@ -39,7 +40,13 @@ export default function ViewOrganization({ params }) {
         <Button variant={orgDetails.isFollowing ? 'success' : 'primary'} onClick={handleJoinToggle}>
           {orgDetails.isFollowing ? 'JOINED' : 'JOIN'}
         </Button>
+        <Link href={`/organizations/edit/${orgDetails.id}`} passHref>
+          <Button variant="info">EDIT</Button>
+        </Link>
       </div>
+      <Link href="/organizations/new" passHref>
+        <Button>Add an Organization</Button>
+      </Link>
     </div>
   );
 }

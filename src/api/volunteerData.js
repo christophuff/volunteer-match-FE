@@ -38,6 +38,19 @@ const createVolunteer = (payload) =>
       .catch(reject);
   });
 
+const deleteVolunteer = (id) =>
+  new Promise((resolve, reject) => {
+    fetch(`${endpoint}/volunteers/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => resolve(data))
+      .catch(reject);
+  });
+
 const getVolunteersByUid = (uid) =>
   new Promise((resolve, reject) => {
     fetch(`${endpoint}/volunteers/uid/${uid}`, {
@@ -69,4 +82,4 @@ const createVolunteerIfNotExists = (volunteer) =>
       .catch(reject);
   });
 
-export { getVolunteers, createVolunteer, getVolunteersByUid, createVolunteerIfNotExists };
+export { getVolunteers, createVolunteer, getVolunteersByUid, createVolunteerIfNotExists, deleteVolunteer };

@@ -33,8 +33,9 @@ export default function ViewConnect() {
           <h2 className="text-center mt-3">Volunteers</h2>
         </div>
         <div className="d-flex flex-row" style={{ overflow: 'auto' }}>
+          {console.log(volunteers)}
           {volunteers.map((volunteer) => (
-            <VolunteerCard key={volunteer.id} causeObj={volunteer} onUpdate={getAllTheVolunteers} />
+            <VolunteerCard key={volunteer.id} volunteerObj={volunteer} onUpdate={getAllTheVolunteers} />
           ))}
         </div>
         <div style={{ color: '#000000' }}>
