@@ -89,6 +89,10 @@ body {
   color: #A1683A;
 }
 
+h2 {
+  color: #A1683A;
+}
+
 .card {
   display: inline-block;
   vertical-align: middle;
@@ -104,4 +108,24 @@ body {
   box-shadow: 0 10px 10px -10px rgba(0, 0, 0, 0.5);
   -webkit-transform: scale(1.02);
   transform: scale(1.02);
+}
+
+.scroll-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2rem;
+  background: none;
+  border: none;
+  z-index: 10;
+  color: #333;
+  cursor: pointer;
+}
+
+.scroll-arrow.left {
+  left: 0;
+}
+
+.scroll-arrow.right {
+  right: 0;
 }

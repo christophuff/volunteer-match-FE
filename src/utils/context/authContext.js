@@ -15,19 +15,22 @@ function AuthProvider(props) {
   useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged(async (fbUser) => {
       if (fbUser) {
+        const nameParts = fbUser.displayName?.split(' ') || [];
+        const firstName = nameParts[0] || fbUser.email?.split('@')[0] || 'User';
+        const lastName = nameParts[1] || ''; // fallback if no last name
+
         const volunteer = {
           uid: fbUser.uid,
-          firstName: fbUser.displayName?.split(' ')[0] || '',
-          lastName: fbUser.displayName?.split(' ')[1] || '',
+          firstName,
+          lastName,
           email: fbUser.email,
           imageUrl: fbUser.photoURL,
         };
 
-        console.log('Sending volunteer:', volunteer);
-        // Ensure this is awaited to avoid race conditions
-        createVolunteerIfNotExists(volunteer);
+        console.log('🚀 Sending volunteer:', volunteer);
+        await createVolunteerIfNotExists(volunteer); // ✅ Await to avoid race conditions
 
-        setUser(fbUser); // only set after volunteer is handled
+        setUser(fbUser);
       } else {
         setUser(false);
       }

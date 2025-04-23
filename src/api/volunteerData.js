@@ -51,6 +51,20 @@ const deleteVolunteer = (id) =>
       .catch(reject);
   });
 
+const getVolunteerById = (id) =>
+  new Promise((resolve, reject) => {
+    fetch(`${endpoint}/volunteers/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    })
+      .then((res) => res.json())
+      .then(resolve)
+      .catch(reject);
+  });
+
 const getVolunteersByUid = (uid) =>
   new Promise((resolve, reject) => {
     fetch(`${endpoint}/volunteers/uid/${uid}`, {
@@ -60,10 +74,15 @@ const getVolunteersByUid = (uid) =>
         Accept: 'application/json',
       },
     })
-      .then((response) => response.json())
-      .then((data) => {
-        if (Array.isArray(data)) resolve(data[0] || null);
-        else resolve(data);
+      .then((response) => response.text())
+      .then((text) => {
+        if (!text) {
+          resolve(null); // no content, treat as not found
+        } else {
+          const data = JSON.parse(text);
+          if (Array.isArray(data)) resolve(data[0] || null);
+          else resolve(data);
+        }
       })
       .catch(reject);
   });
@@ -73,13 +92,16 @@ const createVolunteerIfNotExists = (volunteer) =>
     getVolunteersByUid(volunteer.uid)
       .then((existing) => {
         console.log('Existing volunteer found:', existing);
-        if (Object.keys(existing).length === 0) {
+
+        if (!existing || Object.keys(existing).length === 0) {
+          // No volunteer found, create one
           createVolunteer(volunteer).then(resolve).catch(reject);
         } else {
-          resolve(); // still resolve even if they exist
+          // Already exists
+          resolve();
         }
       })
       .catch(reject);
   });
 
-export { getVolunteers, createVolunteer, getVolunteersByUid, createVolunteerIfNotExists, deleteVolunteer };
+export { getVolunteers, createVolunteer, getVolunteerById, getVolunteersByUid, createVolunteerIfNotExists, deleteVolunteer };

@@ -1,23 +1,30 @@
 'use client';
 
+import firebase from 'firebase/app';
+import 'firebase/auth';
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '@/utils/context/authContext';
 import { Image, Button } from 'react-bootstrap';
 import Link from 'next/link';
 import EditProfileForm from '@/components/forms/EditProfileForm';
 import { getFollowedOrganizations } from '../../api/organizationData';
+import { getVolunteersByUid } from '../../api/volunteerData';
 
 function Profile() {
-  const { user } = useAuth();
   const [bio, setBio] = useState('');
   const [editing, setEditing] = useState(false);
   const [followedOrganizations, setFollowedOrganizations] = useState([]);
 
+  const user = firebase.auth().currentUser;
+
   useEffect(() => {
-    if (user?.uid) {
-      getFollowedOrganizations().then(setFollowedOrganizations);
+    if (user && user.uid) {
+      getVolunteersByUid(user.uid).then((volunteer) => {
+        if (volunteer?.id) {
+          getFollowedOrganizations(volunteer.id).then(setFollowedOrganizations);
+        }
+      });
     }
-  }, [user?.uid]);
+  }, [user]);
 
   const handleSaveBio = (newBio) => {
     setBio(newBio);
