@@ -2,7 +2,6 @@
 
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
-import { Image } from 'react-bootstrap';
 import { getOrganizationsByCause } from '../../../api/organizationData';
 import OrganizationCard from '../../../components/OrganizationCard';
 import { viewCauseDetails } from '../../../api/causeData';

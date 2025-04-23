@@ -8,6 +8,7 @@ const getVolunteers = () =>
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
     })
       .then((response) => response.json())
@@ -28,6 +29,7 @@ const createVolunteer = (payload) =>
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
       body: JSON.stringify(payload),
     })
@@ -36,4 +38,35 @@ const createVolunteer = (payload) =>
       .catch(reject);
   });
 
-export { getVolunteers, createVolunteer };
+const getVolunteersByUid = (uid) =>
+  new Promise((resolve, reject) => {
+    fetch(`${endpoint}/volunteers/uid/${uid}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (Array.isArray(data)) resolve(data[0] || null);
+        else resolve(data);
+      })
+      .catch(reject);
+  });
+
+const createVolunteerIfNotExists = (volunteer) =>
+  new Promise((resolve, reject) => {
+    getVolunteersByUid(volunteer.uid)
+      .then((existing) => {
+        console.log('Existing volunteer found:', existing);
+        if (Object.keys(existing).length === 0) {
+          createVolunteer(volunteer).then(resolve).catch(reject);
+        } else {
+          resolve(); // still resolve even if they exist
+        }
+      })
+      .catch(reject);
+  });
+
+export { getVolunteers, createVolunteer, getVolunteersByUid, createVolunteerIfNotExists };
