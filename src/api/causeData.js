@@ -4,10 +4,11 @@ const endpoint = clientCredentials.databaseURL;
 
 const getCauses = () =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/causes.json`, {
+    fetch(`${endpoint}/causes`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
     })
       .then((response) => response.json())
@@ -23,10 +24,11 @@ const getCauses = () =>
 
 const createCauses = (payload) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/causes.json`, {
+    fetch(`${endpoint}/causes`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
       body: JSON.stringify(payload),
     })
@@ -35,12 +37,13 @@ const createCauses = (payload) =>
       .catch(reject);
   });
 
-const viewCauseDetails = (causeFirebaseKey) =>
+const viewCauseDetails = (causeId) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/causes/${causeFirebaseKey}.json`, {
+    fetch(`${endpoint}/causes/${causeId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
     })
       .then((response) => response.json())

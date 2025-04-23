@@ -4,10 +4,11 @@ const endpoint = clientCredentials.databaseURL;
 
 const getOrganizations = () =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/organizations.json`, {
+    fetch(`${endpoint}/organizations`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
     })
       .then((response) => response.json())
@@ -23,10 +24,11 @@ const getOrganizations = () =>
 
 const createOrganization = (payload) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/organizations.json`, {
+    fetch(`${endpoint}/organizations`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
       body: JSON.stringify(payload),
     })
@@ -35,12 +37,13 @@ const createOrganization = (payload) =>
       .catch(reject);
   });
 
-const getSingleOrganization = (firebaseKey) =>
+const getSingleOrganization = (id) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/organizations/${firebaseKey}.json`, {
+    fetch(`${endpoint}/organizations/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
     })
       .then((response) => response.json())
@@ -48,12 +51,13 @@ const getSingleOrganization = (firebaseKey) =>
       .catch(reject);
   });
 
-const getOrganizationsByCause = (causeFirebaseKey) =>
+const getOrganizationsByCause = (causeId) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/organizations.json?orderBy="cause_id"&equalTo="${causeFirebaseKey}"`, {
+    fetch(`${endpoint}/organizations?orderBy="cause_id"&equalTo="${causeId}"`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
     })
       .then((response) => response.json())
@@ -67,26 +71,36 @@ const getOrganizationsByCause = (causeFirebaseKey) =>
       .catch(reject);
   });
 
-const toggleFollowOrganization = (firebaseKey, currentValue) =>
+const toggleFollowOrganization = (id, currentValue) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/organizations/${firebaseKey}.json`, {
+    fetch(`${endpoint}/organizations/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
       body: JSON.stringify({ isFollowing: !currentValue }),
     })
-      .then((response) => response.json())
+      .then(async (response) => {
+        console.log('🔍 Response status:', response.status);
+        if (!response.ok) throw new Error('Failed to toggle follow status');
+        try {
+          return await response.json();
+        } catch {
+          return null;
+        }
+      })
       .then(resolve)
       .catch(reject);
   });
 
 const getFollowedOrganizations = () =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/organizations.json`, {
+    fetch(`${endpoint}/organizations`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
     })
       .then((response) => response.json())

@@ -11,14 +11,14 @@ export default function ViewCause({ params }) {
   const [causeDetails, setCauseDetails] = useState({});
   const [organizations, setOrganizations] = useState([]);
 
-  const { firebaseKey } = params;
+  const { id } = params;
 
   const getCauseDetails = () => {
-    viewCauseDetails(firebaseKey).then(setCauseDetails);
+    viewCauseDetails(id).then(setCauseDetails);
   };
 
   const getAllTheOrganizations = () => {
-    getOrganizationsByCause(firebaseKey).then(setOrganizations);
+    getOrganizationsByCause(id).then(setOrganizations);
   };
 
   useEffect(() => {
@@ -32,12 +32,12 @@ export default function ViewCause({ params }) {
         <h1 className="text-center mt-3">{causeDetails.name}</h1>
       </div>
       <div className="d-flex justify-content-center">
-        <img className="fit-picture object-fit-cover" src={causeDetails.logo} width={500} height={500} alt="" />
+        <img className="fit-picture object-fit-cover" src={causeDetails.imageUrl} width={500} height={500} alt="" />
       </div>
       <h3 className="text-center mt-3">Associated Organizations</h3>
       <div className="d-flex flex-row justify-content-center" style={{ overflow: 'auto' }}>
         {organizations.map((organization) => (
-          <OrganizationCard key={organization.firebaseKey} organizationObj={organization} onUpdate={getAllTheOrganizations} />
+          <OrganizationCard key={organization.id} organizationObj={organization} onUpdate={getAllTheOrganizations} />
         ))}
       </div>
     </div>

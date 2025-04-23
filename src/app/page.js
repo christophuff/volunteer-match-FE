@@ -32,13 +32,13 @@ function Home() {
         <h3 className="text-center mt-3">Causes</h3>
         <div className="d-flex flex-row" style={{ overflow: 'auto' }}>
           {causes.map((cause) => (
-            <CauseCard key={cause.firebaseKey} causeObj={cause} onUpdate={getAllTheCauses} />
+            <CauseCard key={cause.Id} causeObj={cause} onUpdate={getAllTheCauses} />
           ))}
         </div>
         <h3 className="text-center mt-5">Organizations</h3>
         <div className="d-flex flex-row" style={{ overflow: 'auto' }}>
           {organizations.map((organization) => (
-            <OrganizationCard key={organization.firebaseKey} organizationObj={organization} onUpdate={getAllTheOrganizations} />
+            <OrganizationCard key={organization.Id} organizationObj={organization} onUpdate={getAllTheOrganizations} />
           ))}
         </div>
       </div>

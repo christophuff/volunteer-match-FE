@@ -8,11 +8,11 @@ import Link from 'next/link';
 function OrganizationCard({ organizationObj }) {
   return (
     <Card style={{ width: '18rem', minWidth: '18rem', margin: '10px' }}>
-      <Card.Img variant="top" src={organizationObj.image} alt={organizationObj.name} style={{ height: '250px', objectFit: 'cover' }} />
+      <Card.Img variant="top" src={organizationObj.imageURL} alt={organizationObj.name} style={{ height: '250px', objectFit: 'cover' }} />
       <Card.Body>
         <Card.Title>{organizationObj.name}</Card.Title>
         <Card.Text>{organizationObj.description}</Card.Text>
-        <Link href={`/organizations/${organizationObj.firebaseKey}`} className="stretched-link" passHref>
+        <Link href={`/organizations/${organizationObj.id}`} className="stretched-link" passHref>
           <p> </p>
         </Link>
       </Card.Body>
@@ -22,10 +22,10 @@ function OrganizationCard({ organizationObj }) {
 
 OrganizationCard.propTypes = {
   organizationObj: PropTypes.shape({
-    image: PropTypes.string,
+    imageURL: PropTypes.string,
     name: PropTypes.string,
     description: PropTypes.string,
-    firebaseKey: PropTypes.string,
+    id: PropTypes.number,
   }).isRequired,
 };
 
