@@ -1,14 +1,18 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Button } from 'react-bootstrap';
 import { getOrganizations } from '../../api/organizationData';
-import OrganizationCard from '../../components/OrganizationCard';
 import { getVolunteers } from '../../api/volunteerData';
+import OrganizationCard from '../../components/OrganizationCard';
 import VolunteerCard from '../../components/VolunteerCard';
 
 export default function ViewConnect() {
   const [volunteers, setVolunteers] = useState([]);
   const [organizations, setOrganizations] = useState([]);
+
+  const volunteerScrollRef = useRef(null);
+  const orgScrollRef = useRef(null);
 
   const getAllTheVolunteers = () => {
     getVolunteers().then(setVolunteers);
@@ -16,6 +20,14 @@ export default function ViewConnect() {
 
   const getAllTheOrganizations = () => {
     getOrganizations().then(setOrganizations);
+  };
+
+  const scrollLeft = (ref) => {
+    if (ref.current) ref.current.scrollBy({ left: -300, behavior: 'smooth' });
+  };
+
+  const scrollRight = (ref) => {
+    if (ref.current) ref.current.scrollBy({ left: 300, behavior: 'smooth' });
   };
 
   useEffect(() => {
@@ -28,24 +40,37 @@ export default function ViewConnect() {
       <div className="org-container">
         <h1 className="text-center mt-3">Connect with Volunteers and Organizations</h1>
       </div>
-      <div>
-        <div style={{ color: '#000000' }}>
-          <h2 className="text-center mt-3">Volunteers</h2>
-        </div>
-        <div className="d-flex flex-row" style={{ overflow: 'auto' }}>
-          {console.log(volunteers)}
+
+      {/* Volunteers Section */}
+      <div style={{ position: 'relative' }}>
+        <h2 className="text-center mt-3">Volunteers</h2>
+        <Button className="scroll-arrow left" onClick={() => scrollLeft(volunteerScrollRef)}>
+          ‹
+        </Button>
+        <div ref={volunteerScrollRef} className="d-flex flex-row px-3" style={{ overflowX: 'auto', scrollBehavior: 'smooth' }}>
           {volunteers.map((volunteer) => (
             <VolunteerCard key={volunteer.id} volunteerObj={volunteer} onUpdate={getAllTheVolunteers} />
           ))}
         </div>
-        <div style={{ color: '#000000' }}>
-          <h2 className="text-center mt-5">Organizations</h2>
-        </div>
-        <div className="d-flex flex-row" style={{ overflow: 'auto' }}>
+        <Button className="scroll-arrow right" onClick={() => scrollRight(volunteerScrollRef)}>
+          ›
+        </Button>
+      </div>
+
+      {/* Organizations Section */}
+      <div style={{ position: 'relative', marginTop: '3rem' }}>
+        <h2 className="text-center mt-5">Organizations</h2>
+        <Button className="scroll-arrow left" onClick={() => scrollLeft(orgScrollRef)}>
+          ‹
+        </Button>
+        <div ref={orgScrollRef} className="d-flex flex-row px-3" style={{ overflowX: 'auto', scrollBehavior: 'smooth' }}>
           {organizations.map((organization) => (
             <OrganizationCard key={organization.id} organizationObj={organization} onUpdate={getAllTheOrganizations} />
           ))}
         </div>
+        <Button className="scroll-arrow right" onClick={() => scrollRight(orgScrollRef)}>
+          ›
+        </Button>
       </div>
     </div>
   );
