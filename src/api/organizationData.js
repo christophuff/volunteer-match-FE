@@ -8,6 +8,7 @@ const getOrganizations = () =>
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
     })
       .then((response) => response.json())
@@ -27,6 +28,7 @@ const createOrganization = (payload) =>
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
       body: JSON.stringify(payload),
     })
@@ -68,6 +70,7 @@ const getSingleOrganization = (id) =>
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
     })
       .then((response) => response.json())
@@ -81,6 +84,7 @@ const getOrganizationsByCause = (causeId) =>
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
     })
       .then((response) => response.json())
@@ -100,10 +104,19 @@ const toggleFollowOrganization = (id, currentValue) =>
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
       body: JSON.stringify({ isFollowing: !currentValue }),
     })
-      .then((response) => response.json())
+      .then(async (response) => {
+        console.log('🔍 Response status:', response.status);
+        if (!response.ok) throw new Error('Failed to toggle follow status');
+        try {
+          return await response.json();
+        } catch {
+          return null;
+        }
+      })
       .then(resolve)
       .catch(reject);
   });
@@ -114,6 +127,7 @@ const getFollowedOrganizations = () =>
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
     })
       .then((response) => response.json())

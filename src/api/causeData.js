@@ -8,6 +8,7 @@ const getCauses = () =>
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
     })
       .then((response) => response.json())
@@ -23,10 +24,11 @@ const getCauses = () =>
 
 const createCauses = (payload) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/causes.json`, {
+    fetch(`${endpoint}/causes`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
       body: JSON.stringify(payload),
     })
@@ -41,6 +43,7 @@ const viewCauseDetails = (id) =>
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
     })
       .then((response) => response.json())

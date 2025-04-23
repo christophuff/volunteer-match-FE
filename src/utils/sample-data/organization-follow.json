@@ -1,0 +1,17 @@
+{
+  "-OrgFollowA1B2C3": {
+    "id": "-OrgFollowA1B2C3",
+    "volunteerId": "-Vol101AbcDef",
+    "organizationId": "-Org201XyZ789"
+  },
+  "-OrgFollowD4E5F6": {
+    "id": "-OrgFollowD4E5F6",
+    "volunteerId": "-Vol102GhI456",
+    "organizationId": "-Org201XyZ789"
+  },
+  "-OrgFollowG7H8I9": {
+    "id": "-OrgFollowG7H8I9",
+    "volunteerId": "-Vol101AbcDef",
+    "organizationId": "-Org202MnO123"
+  }
+}
