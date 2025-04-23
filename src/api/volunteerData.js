@@ -36,4 +36,17 @@ const createVolunteer = (payload) =>
       .catch(reject);
   });
 
-export { getVolunteers, createVolunteer };
+const deleteVolunteer = (id) =>
+  new Promise((resolve, reject) => {
+    fetch(`${endpoint}/volunteers/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => resolve(data))
+      .catch(reject);
+  });
+
+export { getVolunteers, createVolunteer, deleteVolunteer };

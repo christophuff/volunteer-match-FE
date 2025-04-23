@@ -8,12 +8,12 @@ import Link from 'next/link';
 function VolunteerCard({ volunteerObj }) {
   return (
     <Card style={{ width: '18rem', minWidth: '18rem', margin: '10px' }}>
-      <Card.Img variant="top" src={volunteerObj?.imageUrl} alt={volunteerObj?.first_name} style={{ height: '250px', objectFit: 'cover' }} />
+      <Card.Img variant="top" src={volunteerObj.imageUrl} alt={volunteerObj.firstName} style={{ height: '250px', objectFit: 'cover' }} />
       <Card.Body>
         <Card.Title>
-          {volunteerObj?.first_name} {volunteerObj?.last_name}
+          {volunteerObj.firstName} {volunteerObj.lastName}
         </Card.Title>
-        <Link href={`/volunteer/${volunteerObj?.id}`} className="stretched-link" passHref />
+        <Link href={`/volunteer/${volunteerObj.id}`} className="stretched-link" passHref />
       </Card.Body>
     </Card>
   );
@@ -22,8 +22,8 @@ function VolunteerCard({ volunteerObj }) {
 VolunteerCard.propTypes = {
   volunteerObj: PropTypes.shape({
     imageUrl: PropTypes.string,
-    first_name: PropTypes.string,
-    last_name: PropTypes.string,
+    firstName: PropTypes.string,
+    lastName: PropTypes.string,
     id: PropTypes.number,
   }).isRequired,
 };
