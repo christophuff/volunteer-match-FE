@@ -53,7 +53,7 @@ function Profile() {
         <h4>Followed Organizations</h4>
         <ul className="list-group">
           {followedOrganizations.map((org) => (
-            <li key={org.firebaseKey} className="list-group-item">
+            <li key={org.id} className="list-group-item">
               <Link href={`/organizations/${org.id}`} passHref>
                 <span style={{ cursor: 'pointer', color: '#0d6efd', textDecoration: 'underline' }}>{org.name}</span>
               </Link>

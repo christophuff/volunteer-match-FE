@@ -37,9 +37,9 @@ const createCauses = (payload) =>
       .catch(reject);
   });
 
-const viewCauseDetails = (causeId) =>
+const viewCauseDetails = (id) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/causes/${causeId}`, {
+    fetch(`${endpoint}/causes/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

@@ -12,9 +12,7 @@ function OrganizationCard({ organizationObj }) {
       <Card.Body>
         <Card.Title>{organizationObj.name}</Card.Title>
         <Card.Text>{organizationObj.description}</Card.Text>
-        <Link href={`/organizations/${organizationObj.id}`} className="stretched-link" passHref>
-          <p> </p>
-        </Link>
+        <Link href={`/organizations/${organizationObj.id}`} className="stretched-link" passHref />
       </Card.Body>
     </Card>
   );

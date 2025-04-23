@@ -53,7 +53,8 @@ const getSingleOrganization = (id) =>
 
 const getOrganizationsByCause = (causeId) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/organizations?orderBy="cause_id"&equalTo="${causeId}"`, {
+    fetch(`${endpoint}/organizations?causeId=${causeId}`, {
+
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

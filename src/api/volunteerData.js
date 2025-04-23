@@ -15,6 +15,7 @@ const getVolunteers = () =>
       .then((data) => {
         if (data) {
           resolve(Object.values(data));
+          // console.log(data);
         } else {
           resolve([]);
         }
