@@ -87,6 +87,23 @@ const getVolunteersByUid = (uid) =>
       .catch(reject);
   });
 
+const getVolunteersByOrganization = (organizationId) =>
+  new Promise((resolve, reject) => {
+    fetch(`${endpoint}/organizations/${organizationId}/volunteers`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then((data) => resolve(data || []))
+      .catch(reject);
+  });
+
 const createVolunteerIfNotExists = (volunteer) =>
   new Promise((resolve, reject) => {
     getVolunteersByUid(volunteer.uid)
@@ -104,4 +121,4 @@ const createVolunteerIfNotExists = (volunteer) =>
       .catch(reject);
   });
 
-export { getVolunteers, createVolunteer, getVolunteerById, getVolunteersByUid, createVolunteerIfNotExists, deleteVolunteer };
+export { getVolunteers, createVolunteer, getVolunteerById, getVolunteersByUid, getVolunteersByOrganization, createVolunteerIfNotExists, deleteVolunteer };

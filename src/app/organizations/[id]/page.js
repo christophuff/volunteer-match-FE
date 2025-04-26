@@ -7,17 +7,13 @@ import React, { useEffect, useState } from 'react';
 import { Button, Image } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { getSingleOrganization, toggleFollowOrganization, checkIfUserFollows } from '../../../api/organizationData';
-import { getVolunteersByUid } from '../../../api/volunteerData';
+import { getVolunteersByOrganization, getVolunteersByUid } from '../../../api/volunteerData';
 
 export default function ViewOrganization({ params }) {
   const [orgDetails, setOrgDetails] = useState(null);
   const [volunteerId, setVolunteerId] = useState(null);
+  const [followers, setFollowers] = useState([]);
   const { id } = params;
-
-  // Get organization details
-  useEffect(() => {
-    getSingleOrganization(id).then(setOrgDetails);
-  }, [id]);
 
   // Get volunteer by UID
   useEffect(() => {
@@ -33,16 +29,23 @@ export default function ViewOrganization({ params }) {
     }
   }, []);
 
+  // Get organization details and check if user follows
   useEffect(() => {
-    if (orgDetails && volunteerId) {
-      checkIfUserFollows(volunteerId, orgDetails.id).then((isFollowing) => {
-        setOrgDetails((prev) => ({
-          ...prev,
-          isFollowing,
-        }));
+    if (id && volunteerId) {
+      getSingleOrganization(id).then((org) => {
+        checkIfUserFollows(volunteerId, org.id).then((isFollowing) => {
+          setOrgDetails({ ...org, isFollowing });
+        });
       });
     }
-  }, [orgDetails, volunteerId]);
+  }, [id, volunteerId]);
+
+  // Fetch followers
+  useEffect(() => {
+    if (orgDetails?.id) {
+      getVolunteersByOrganization(orgDetails.id).then(setFollowers);
+    }
+  }, [orgDetails]);
 
   const handleJoinToggle = () => {
     if (!orgDetails || !volunteerId) {
@@ -58,6 +61,16 @@ export default function ViewOrganization({ params }) {
           ...prev,
           isFollowing: newFollowState,
         }));
+        // Refresh followers list
+        fetch(`/organizations/${orgDetails.id}/volunteers`)
+          .then((res) => {
+            if (!res.ok) {
+              throw new Error(`HTTP error! status: ${res.status}`);
+            }
+            return res.json();
+          })
+          .then(setFollowers)
+          .catch((err) => console.error('Error fetching followers:', err));
       })
       .catch((err) => {
         console.error('❌ Toggle failed:', err);
@@ -67,29 +80,48 @@ export default function ViewOrganization({ params }) {
   if (!orgDetails) return <p>Loading...</p>;
 
   return (
-    <div className="org-container">
-      {/* Organization Image */}
-      <div>{orgDetails.imageURL && <Image src={orgDetails.imageURL} alt={orgDetails.name || 'Organization'} width={400} height={300} style={{ objectFit: 'cover' }} />}</div>
+    <>
+      <div className="org-container">
+        {/* Organization Image */}
+        <div>{orgDetails.imageURL && <Image src={orgDetails.imageURL} alt={orgDetails.name || 'Organization'} width={400} height={300} style={{ objectFit: 'cover' }} />}</div>
 
-      {/* Organization Details */}
-      <div>
-        <h5>{orgDetails.name}</h5>
-        <p>{orgDetails.description || ''}</p>
-        <hr />
-        <Button className="me-2" variant={orgDetails.isFollowing ? 'success' : 'primary'} onClick={handleJoinToggle} disabled={!volunteerId}>
-          {orgDetails.isFollowing ? 'JOINED' : 'JOIN'}
-        </Button>
-        <Link href={`/organizations/edit/${orgDetails.id}`} passHref>
-          <Button className="me-2" variant="info">
-            EDIT
+        {/* Organization Details */}
+
+        <div>
+          <h5>{orgDetails.name}</h5>
+          <p>{orgDetails.description || ''}</p>
+          <hr />
+          <Button className="me-2" variant={orgDetails.isFollowing ? 'success' : 'primary'} onClick={handleJoinToggle} disabled={!volunteerId}>
+            {orgDetails.isFollowing ? 'JOINED' : 'JOIN'}
           </Button>
-        </Link>
+          <Link href={`/organizations/edit/${orgDetails.id}`} passHref>
+            <Button className="me-2" variant="info">
+              EDIT
+            </Button>
+          </Link>
+          <Link href="/organizations/new" passHref>
+            <Button>Add an Organization</Button>
+          </Link>
+        </div>
       </div>
 
-      <Link href="/organizations/new" passHref>
-        <Button>Add an Organization</Button>
-      </Link>
-    </div>
+      {/* Followers List */}
+      <div>
+        <h4 className="text-center mt-5" style={{ color: '#A1683A' }}>
+          Volunteers
+        </h4>
+        <ul className="follower-card">
+          {followers.map((volunteer) => (
+            <li key={volunteer.id} className="list-group-item">
+              <Image src={volunteer.imageUrl} alt="Volunteer" width={50} height={50} style={{ objectFit: 'cover', borderRadius: '50%' }} />
+              <Link href={`/volunteer/${volunteer.id}`}>
+                {volunteer.firstName} {volunteer.lastName}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </>
   );
 }
 
