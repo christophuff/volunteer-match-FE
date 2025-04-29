@@ -8,6 +8,8 @@ import Form from 'react-bootstrap/Form';
 import { Button } from 'react-bootstrap';
 import { useAuth } from '../../utils/context/authContext';
 import { updateOrganization, createOrganization } from '../../api/organizationData';
+import { getCauses } from '../../api/causeData';
+import { getVolunteersByUid } from '../../api/volunteerData';
 
 const initialState = {
   name: '',
@@ -15,17 +17,28 @@ const initialState = {
   description: '',
   location: '',
   causeId: '',
-  isFollowing: true,
+  isFollowing: false,
 };
 
 function OrganizationForm({ obj = initialState }) {
   const [formInput, setFormInput] = useState(obj);
+  const [causes, setCauses] = useState([]);
+  const [volunteer, setvolunteer] = useState({});
+  const [fixedObj, setFixedObj] = useState({});
   const router = useRouter();
   const { user } = useAuth();
 
   useEffect(() => {
-    if (obj.id) setFormInput(obj);
-  }, [obj, user]);
+    getVolunteersByUid(user.uid).then(setvolunteer);
+    getCauses().then(setCauses);
+    if (obj.id) {
+      console.log("It's a hit!");
+      setFixedObj(obj);
+      delete fixedObj.cause;
+      delete fixedObj.volunteer;
+      setFormInput(fixedObj);
+    }
+  }, [obj, user, fixedObj]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,13 +54,10 @@ function OrganizationForm({ obj = initialState }) {
       console.log(formInput);
       updateOrganization(formInput).then(() => router.push(`/organizations/${obj.id}`));
     } else {
-      const payload = { ...formInput, volunteerId: user.uid };
-      createOrganization(payload).then(({ name }) => {
-        console.log(name);
-        const patchPayload = { id: name };
-        updateOrganization(patchPayload).then(() => {
-          router.push('/');
-        });
+      const payload = { ...formInput, volunteerId: volunteer.id };
+      console.log(payload);
+      createOrganization(payload).then(() => {
+        router.push('/');
       });
     }
   };
@@ -76,21 +86,17 @@ function OrganizationForm({ obj = initialState }) {
         <Form.Control type="text" placeholder="Organization's Location" name="location" value={formInput.location} onChange={handleChange} required />
       </FloatingLabel>
 
-      {/* A WAY TO HANDLE UPDATES FOR TOGGLES, RADIOS, ETC  */}
-      <Form.Check
-        className="text-white mb-3"
-        type="switch"
-        id="isFollowing"
-        name="isFollowing"
-        label="Following?"
-        checked={formInput.isFollowing}
-        onChange={(e) => {
-          setFormInput((prevState) => ({
-            ...prevState,
-            isFollowing: e.target.checked,
-          }));
-        }}
-      />
+      {/* CAUSE SELECT  */}
+      <FloatingLabel controlId="floatingSelect">
+        <Form.Select aria-label="cause" name="causeId" onChange={handleChange} className="mb-3" value={formInput.causeId || ''} required>
+          <option value="">Select a Cause</option>
+          {causes.map((cause) => (
+            <option key={cause.id} value={cause.id}>
+              {cause.name}
+            </option>
+          ))}
+        </Form.Select>
+      </FloatingLabel>
 
       {/* SUBMIT BUTTON  */}
       <Button type="submit">{obj.id ? 'Update' : 'Create'} Organization</Button>
@@ -106,7 +112,6 @@ OrganizationForm.propTypes = {
     location: PropTypes.string,
     causeId: PropTypes.number,
     isFollowing: PropTypes.bool,
-    id: PropTypes.number,
   }),
 };
 
