@@ -6,7 +6,7 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { Button, Image } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import { getSingleOrganization, toggleFollowOrganization, checkIfUserFollows } from '../../../api/organizationData';
+import { getSingleOrganization, toggleFollowOrganization, checkIfUserFollows, deleteOrganization } from '../../../api/organizationData';
 import { getVolunteersByOrganization, getVolunteersByUid } from '../../../api/volunteerData';
 
 export default function ViewOrganization({ params }) {
@@ -101,6 +101,16 @@ export default function ViewOrganization({ params }) {
           </Link>
           <Link href="/organizations/new" passHref>
             <Button>Add an Organization</Button>
+          </Link>
+          <Link href="/" passHref>
+            <Button
+              variant="danger"
+              onClick={() => {
+                deleteOrganization(orgDetails.id);
+              }}
+            >
+              Delete Organization
+            </Button>
           </Link>
         </div>
       </div>

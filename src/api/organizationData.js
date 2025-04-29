@@ -47,7 +47,7 @@ const deleteOrganization = (id) =>
         'Content-Type': 'application/json',
       },
     })
-      .then((response) => response.json())
+      // .then((response) => response.json())
       .then((data) => resolve(data))
       .catch(reject);
   });
@@ -55,13 +55,13 @@ const deleteOrganization = (id) =>
 const updateOrganization = (payload) =>
   new Promise((resolve, reject) => {
     fetch(`${endpoint}/organizations/${payload.id}`, {
-      method: 'PATCH',
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload),
     })
-      .then((response) => response.json())
+      // .then((response) => response.json())
       .then((data) => resolve(data))
       .catch(reject);
   });
