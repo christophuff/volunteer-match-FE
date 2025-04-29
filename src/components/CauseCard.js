@@ -12,7 +12,7 @@ function CauseCard({ causeObj }) {
       <Card.Body>
         <Card.Title>{causeObj.name}</Card.Title>
         <Card.Text>{causeObj.description}</Card.Text>
-        <Link href={`/cause/${causeObj.id}`} className="stretched-link" passHref />
+        <Link href={`/causes/${causeObj.id}`} className="stretched-link" passHref />
       </Card.Body>
     </Card>
   );
