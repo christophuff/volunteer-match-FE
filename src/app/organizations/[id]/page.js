@@ -100,10 +100,11 @@ export default function ViewOrganization({ params }) {
             </Button>
           </Link>
           <Link href="/organizations/new" passHref>
-            <Button>Add an Organization</Button>
+            <Button className="me-2">Add an Organization</Button>
           </Link>
           <Link href="/" passHref>
             <Button
+              className="me-2"
               variant="danger"
               onClick={() => {
                 deleteOrganization(orgDetails.id);
