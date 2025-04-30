@@ -4,12 +4,16 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { getOrganizations } from '../../api/organizationData';
 import { getVolunteers } from '../../api/volunteerData';
+import { getCauses } from '../../api/causeData';
 import OrganizationCard from '../../components/OrganizationCard';
 import VolunteerCard from '../../components/VolunteerCard';
 
 export default function ViewConnect() {
   const [volunteers, setVolunteers] = useState([]);
   const [organizations, setOrganizations] = useState([]);
+  const [causes, setCauses] = useState([]);
+  const [filteredOrganizations, setFilteredOrganizations] = useState([]);
+  const [allOrgCheck, setAllOrgCheck] = useState(true);
 
   const volunteerScrollRef = useRef(null);
   const orgScrollRef = useRef(null);
@@ -20,6 +24,20 @@ export default function ViewConnect() {
 
   const getAllTheOrganizations = () => {
     getOrganizations().then(setOrganizations);
+  };
+
+  const getAllTheCauses = () => {
+    getCauses().then(setCauses);
+  };
+
+  const filterOrganizations = (id) => {
+    if (id === 'all') {
+      setAllOrgCheck(true);
+    } else {
+      setAllOrgCheck(false);
+      const numId = Number(id);
+      setFilteredOrganizations(organizations.filter((organization) => organization.causeId === numId));
+    }
   };
 
   const scrollLeft = (ref) => {
@@ -33,6 +51,7 @@ export default function ViewConnect() {
   useEffect(() => {
     getAllTheVolunteers();
     getAllTheOrganizations();
+    getAllTheCauses();
   }, []);
 
   return (
@@ -59,14 +78,33 @@ export default function ViewConnect() {
 
       {/* Organizations Section */}
       <div style={{ position: 'relative', marginTop: '3rem' }}>
-        <h2 className="text-center mt-5">Organizations</h2>
+        <div className="d-flex flex-column align-content-center" style={{ marginBottom: '1rem' }}>
+          <h2 className="text-center mt-2">Organizations</h2>
+          <label className="text-center">
+            Filter By Cause:
+            <select
+              defaultValue="all"
+              onChange={(e) => {
+                filterOrganizations(e.target.value);
+              }}
+            >
+              <option key="all" value="all">
+                All
+              </option>
+              {causes.map((cause) => (
+                <option key={cause.id} value={cause.id}>
+                  {cause.name}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+
         <Button className="scroll-arrow left" onClick={() => scrollLeft(orgScrollRef)}>
           ‹
         </Button>
         <div ref={orgScrollRef} className="d-flex flex-row px-3" style={{ overflowX: 'auto', scrollBehavior: 'smooth' }}>
-          {organizations.map((organization) => (
-            <OrganizationCard key={organization.id} organizationObj={organization} onUpdate={getAllTheOrganizations} />
-          ))}
+          {allOrgCheck ? organizations.map((organization) => <OrganizationCard key={organization.id} organizationObj={organization} onUpdate={getAllTheOrganizations} />) : filteredOrganizations.map((organization) => <OrganizationCard key={organization.id} organizationObj={organization} onUpdate={getAllTheOrganizations} />)}
         </div>
         <Button className="scroll-arrow right" onClick={() => scrollRight(orgScrollRef)}>
           ›
