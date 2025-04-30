@@ -44,11 +44,15 @@ const deleteVolunteer = (id) =>
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
-    })
-      .then((response) => response.json())
-      .then((data) => resolve(data))
-      .catch(reject);
+    }).then((response) =>
+      response
+        .text()
+        .then((text) => (text ? JSON.parse(text) : null))
+        .then((data) => resolve(data))
+        .catch(reject),
+    );
   });
 
 const getVolunteerById = (id) =>

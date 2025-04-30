@@ -2,6 +2,7 @@ import { useAuth } from '@/utils/context/authContext';
 import Image from 'next/image';
 import { Dropdown } from 'react-bootstrap';
 import { signOut } from '../utils/auth';
+import DeleteAccount from './DeleteAccount';
 
 function ProfileDropdown() {
   const { user } = useAuth();
@@ -16,6 +17,8 @@ function ProfileDropdown() {
         <Dropdown.Item href="/profile">View Profile</Dropdown.Item>
         <Dropdown.Divider />
         <Dropdown.Item onClick={signOut}>Sign Out</Dropdown.Item>
+        <Dropdown.Divider />
+        <DeleteAccount />
       </Dropdown.Menu>
     </Dropdown>
   );
