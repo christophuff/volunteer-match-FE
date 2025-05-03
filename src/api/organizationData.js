@@ -13,13 +13,14 @@ const getOrganizations = () =>
         Accept: 'application/json',
       },
     })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data) {
-          resolve(Object.values(data));
-        } else {
-          resolve([]);
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`API error ${response.status}`);
         }
+        return response.json();
+      })
+      .then((data) => {
+        resolve(data);
       })
       .catch(reject);
   });
@@ -54,6 +55,11 @@ const deleteOrganization = (id) =>
 
 const updateOrganization = (payload) =>
   new Promise((resolve, reject) => {
+    if (!payload.id) {
+      reject(new Error('No ID provided for updating organization'));
+      return;
+    }
+
     fetch(`${endpoint}/organizations/${payload.id}`, {
       method: 'PUT',
       headers: {
@@ -61,9 +67,18 @@ const updateOrganization = (payload) =>
       },
       body: JSON.stringify(payload),
     })
-      // .then((response) => response.json())
-      .then((data) => resolve(data))
-      .catch(reject);
+      .then((response) => {
+        if (response.status === 204) {
+          // If response status is 204 (No Content), we resolve without parsing the body
+          return resolve();
+        }
+        // If the response is not 204, attempt to parse as JSON
+        return response.json().then((data) => resolve(data));
+      })
+      .catch((error) => {
+        console.error('Fetch failed:', error);
+        reject(error);
+      });
   });
 
 const getSingleOrganization = (id) =>
