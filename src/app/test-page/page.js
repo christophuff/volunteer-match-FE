@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function DeleteMe() {
+export default function TestPage() {
   return (
     <div className="hero p-5">
       <div>
