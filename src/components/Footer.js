@@ -18,7 +18,7 @@ export default function Footer() {
               <NavLink href="/" className="text-white">
                 Home
               </NavLink>
-              <NavLink href="#" className="text-white">
+              <NavLink href="/test-page" className="text-white">
                 About
               </NavLink>
               <NavLink href="#" className="text-white">

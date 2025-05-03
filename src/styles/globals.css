@@ -156,3 +156,24 @@ h2 {
   background: #A1683A;
   margin-top: auto;
 }
+
+.hero 
+{
+  background-image: url(https://cisjax.org/wp-content/uploads/2023/09/Youth-Volunteer.jpg?vcv-dynamic-field=featured_image&alt=Youth+Volunteer&caption=&title=Youth+Volunteer);
+  background-size: cover;
+  height: 400px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.hero-heading
+{
+  font-size: 80px;
+  text-shadow: 1px 1px 2px black;
+}
+
+.hero-subheading
+{
+  font-size: 40px;
+  text-shadow: 1px 1px 2px black;
+}
