@@ -1,6 +1,10 @@
 body {
   background: #EED2CC;
   color: white;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
 }
 
 .navbar {
@@ -145,4 +149,10 @@ h2 {
 .follower-card li a {
   color: #EED2CC;
   margin: 5px;
+}
+
+.footer
+{
+  background: #A1683A;
+  margin-top: auto;
 }
