@@ -1,17 +1,21 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Image } from 'react-bootstrap';
+import { Button, Image } from 'react-bootstrap';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { getFollowedOrganizations } from '@/api/organizationData';
 import { getVolunteerById } from '@/api/volunteerData';
+import { checkIfUserFollows, followVolunteer, unfollowVolunteer } from '@/api/volunteerFollowData';
+// import firebase from 'firebase/app';
 
 function VolunteerProfile() {
   const [volunteer, setVolunteer] = useState(null);
   const [followedOrganizations, setFollowedOrganizations] = useState([]);
-
-  const { id } = useParams(); // assumes you're using /volunteer/:id route
+  const [isFollowing, setIsFollowing] = useState(false);
+  const { id } = useParams();
+  // const currentUserId = firebase.auth().currentUser.uid;
+  const currentUserId = 3;
 
   useEffect(() => {
     if (id) {
@@ -19,10 +23,26 @@ function VolunteerProfile() {
         setVolunteer(v);
         if (v?.id) {
           getFollowedOrganizations(v.id).then(setFollowedOrganizations);
+          // Check if the current user follows this volunteer
+          checkIfUserFollows(currentUserId, v.id).then(setIsFollowing);
         }
+        console.log(currentUserId);
       });
     }
-  }, [id]);
+  }, [currentUserId, id]);
+
+  // Function to handle follow/unfollow toggle
+  const handleFollowToggle = () => {
+    if (isFollowing) {
+      unfollowVolunteer(currentUserId, volunteer.id)
+        .then(() => setIsFollowing(false))
+        .catch((error) => console.error('Error unfollowing:', error));
+    } else {
+      followVolunteer(currentUserId, volunteer.id)
+        .then(() => setIsFollowing(true))
+        .catch((error) => console.error('Error following:', error));
+    }
+  };
 
   if (!volunteer) return <p>Loading volunteer profile...</p>;
 
@@ -41,6 +61,9 @@ function VolunteerProfile() {
             <a href={`mailto:${volunteer.email}`}>{volunteer.email}</a>
           </p>
           {volunteer.bio ? <p>{volunteer.bio}</p> : <p className="text-muted fst-italic">This user hasn’t added a bio yet.</p>}
+          <Button variant={isFollowing ? 'success' : 'primary'} onClick={handleFollowToggle}>
+            {isFollowing ? 'Following' : 'Follow'}
+          </Button>
         </div>
       </div>
 
