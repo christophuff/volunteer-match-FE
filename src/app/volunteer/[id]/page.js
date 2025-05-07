@@ -5,20 +5,32 @@ import { Button, Image } from 'react-bootstrap';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { getFollowedOrganizations } from '@/api/organizationData';
-import { getVolunteerById } from '@/api/volunteerData';
+import { getVolunteerById, fetchVolunteerId } from '@/api/volunteerData';
 import { checkIfUserFollows, followVolunteer, unfollowVolunteer } from '@/api/volunteerFollowData';
-// import firebase from 'firebase/app';
+import firebase from 'firebase';
 
 function VolunteerProfile() {
   const [volunteer, setVolunteer] = useState(null);
   const [followedOrganizations, setFollowedOrganizations] = useState([]);
   const [isFollowing, setIsFollowing] = useState(false);
   const { id } = useParams();
-  // const currentUserId = firebase.auth().currentUser.uid;
-  const currentUserId = 3;
+  const [currentUserId, setCurrentUserId] = useState(null);
 
   useEffect(() => {
-    if (id) {
+    // Fetch currentUserId once the component mounts
+    const getCurrentUserId = async () => {
+      try {
+        const volunteerId = await fetchVolunteerId(firebase.auth().currentUser.uid);
+        setCurrentUserId(volunteerId.volunteerId); // Assuming response has a volunteerId field
+      } catch (error) {
+        console.error('Error fetching current user volunteer ID:', error);
+      }
+    };
+    getCurrentUserId();
+  }, []);
+
+  useEffect(() => {
+    if (id && currentUserId !== null) {
       getVolunteerById(Number(id)).then((v) => {
         setVolunteer(v);
         if (v?.id) {
@@ -26,13 +38,18 @@ function VolunteerProfile() {
           // Check if the current user follows this volunteer
           checkIfUserFollows(currentUserId, v.id).then(setIsFollowing);
         }
-        console.log(currentUserId);
       });
     }
   }, [currentUserId, id]);
 
   // Function to handle follow/unfollow toggle
   const handleFollowToggle = () => {
+    // Prevent the user from following themselves
+    if (currentUserId === volunteer.id) {
+      alert('You cannot follow yourself.');
+      return; // Exit early, don't perform the follow/unfollow action
+    }
+
     if (isFollowing) {
       unfollowVolunteer(currentUserId, volunteer.id)
         .then(() => setIsFollowing(false))

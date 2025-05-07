@@ -1,3 +1,4 @@
+import firebase from 'firebase';
 import { clientCredentials } from '../utils/client';
 
 const endpoint = clientCredentials.databaseURL;
@@ -91,6 +92,22 @@ const getVolunteersByUid = (uid) =>
       .catch(reject);
   });
 
+const fetchVolunteerId = (uid) =>
+  new Promise((resolve, reject) => {
+    const user = firebase.auth().currentUser;
+    if (user) {
+      fetch(`${endpoint}/volunteers/uid/${uid}`, {
+        method: 'GET', // Change method to GET
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => resolve(data))
+        .catch(reject);
+    }
+  });
+
 const getVolunteersByOrganization = (organizationId) =>
   new Promise((resolve, reject) => {
     fetch(`${endpoint}/organizations/${organizationId}/volunteers`, {
@@ -125,4 +142,4 @@ const createVolunteerIfNotExists = (volunteer) =>
       .catch(reject);
   });
 
-export { getVolunteers, createVolunteer, getVolunteerById, getVolunteersByUid, getVolunteersByOrganization, createVolunteerIfNotExists, deleteVolunteer };
+export { getVolunteers, createVolunteer, getVolunteerById, getVolunteersByUid, fetchVolunteerId, getVolunteersByOrganization, createVolunteerIfNotExists, deleteVolunteer };
