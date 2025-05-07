@@ -21,7 +21,7 @@ function VolunteerProfile() {
     const getCurrentUserId = async () => {
       try {
         const volunteerId = await fetchVolunteerId(firebase.auth().currentUser.uid);
-        setCurrentUserId(volunteerId.volunteerId); // Assuming response has a volunteerId field
+        setCurrentUserId(volunteerId); // Directly set the volunteerId (no need to access volunteerId.volunteerId)
       } catch (error) {
         console.error('Error fetching current user volunteer ID:', error);
       }
