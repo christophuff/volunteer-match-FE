@@ -1,4 +1,3 @@
-import firebase from 'firebase';
 import { clientCredentials } from '../utils/client';
 
 const endpoint = clientCredentials.databaseURL;
@@ -94,18 +93,20 @@ const getVolunteersByUid = (uid) =>
 
 const fetchVolunteerId = (uid) =>
   new Promise((resolve, reject) => {
-    const user = firebase.auth().currentUser;
-    if (user) {
-      fetch(`${endpoint}/volunteers/uid/${uid}`, {
-        method: 'GET', // Change method to GET
-        headers: {
-          'Content-Type': 'application/json',
-        },
+    fetch(`${endpoint}/volunteers/uid/${uid}/id`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ uid }), // Send the UID in the request body
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data && data.volunteerId) {
+          resolve(data.volunteerId); // Resolve with the volunteerId
+        }
       })
-        .then((response) => response.json())
-        .then((data) => resolve(data))
-        .catch(reject);
-    }
+      .catch(reject); // Reject on error
   });
 
 const getVolunteersByOrganization = (organizationId) =>
