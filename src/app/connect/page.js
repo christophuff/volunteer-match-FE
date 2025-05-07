@@ -30,13 +30,27 @@ export default function ViewConnect() {
     getCauses().then(setCauses);
   };
 
+  const filterByCause = (id) => {
+    const filteredOrgs = [];
+    organizations.forEach((org) =>
+      org.organizationCauses.forEach((cause) => {
+        if (cause.causeId === id) {
+          filteredOrgs.push(org);
+        }
+      }),
+    );
+    return filteredOrgs;
+  };
+
   const filterOrganizations = (id) => {
     if (id === 'all') {
       setAllOrgCheck(true);
     } else {
       setAllOrgCheck(false);
       const numId = Number(id);
-      setFilteredOrganizations(organizations.filter((organization) => organization.causeId === numId));
+      // console.log(organizations)
+      setFilteredOrganizations(filterByCause(numId));
+      // setFilteredOrganizations(organizations.filter((organization) => organization.causeId === numId));
     }
   };
 
