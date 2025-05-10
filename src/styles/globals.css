@@ -157,13 +157,21 @@ h2 {
   margin-top: auto;
 }
 
+@keyframes fadeIn {
+  to {
+      opacity: 1;
+  }
+}
+
 .hero 
 {
-  background-image: url(https://cisjax.org/wp-content/uploads/2023/09/Youth-Volunteer.jpg?vcv-dynamic-field=featured_image&alt=Youth+Volunteer&caption=&title=Youth+Volunteer);
+  background: linear-gradient(to right, #6C9A8B, transparent), url(https://cisjax.org/wp-content/uploads/2023/09/Youth-Volunteer.jpg?vcv-dynamic-field=featured_image&alt=Youth+Volunteer&caption=&title=Youth+Volunteer);
   background-size: cover;
   height: 400px;
   background-repeat: no-repeat;
   background-position: center;
+  opacity: 0;
+  animation: fadeIn 2s forwards;
 }
 
 .hero-heading
