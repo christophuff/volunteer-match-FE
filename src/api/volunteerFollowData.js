@@ -61,4 +61,26 @@ const unfollowVolunteer = (followerId, followedId) =>
       .catch(() => reject(new Error('Error unfollowing volunteer')));
   });
 
+// const getFollowedVolunteers = (volunteerId) =>
+//   new Promise((resolve, reject) => {
+//     if (!volunteerId) {
+//       reject(new Error('Missing volunteer ID'));
+//       return;
+//     }
+
+//     fetch(`${endpoint}/volunteers/${volunteerId}/followed-organizations`, {
+//       method: 'GET',
+//       headers: {
+//         'Content-Type': 'application/json',
+//         Accept: 'application/json',
+//       },
+//     })
+//       .then((res) => {
+//         if (!res.ok) throw new Error(`HTTP ${res.status}`);
+//         return res.json();
+//       })
+//       .then((data) => resolve(data || []))
+//       .catch(reject);
+//   });
+
 export { checkIfUserFollows, followVolunteer, unfollowVolunteer };
