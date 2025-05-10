@@ -2,20 +2,20 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { Button } from 'react-bootstrap';
+import { getCauses } from '../../api/causeData';
 import { getOrganizations } from '../../api/organizationData';
-import { getVolunteers } from '../../api/volunteerData';
+import CauseCard from '../../components/CauseCard';
 import OrganizationCard from '../../components/OrganizationCard';
-import VolunteerCard from '../../components/VolunteerCard';
 
-export default function ViewCommunity() {
-  const [volunteers, setVolunteers] = useState([]);
+function Home() {
+  const [causes, setCauses] = useState([]);
   const [organizations, setOrganizations] = useState([]);
 
-  const volunteerScrollRef = useRef(null);
+  const causeScrollRef = useRef(null);
   const orgScrollRef = useRef(null);
 
-  const getAllTheVolunteers = () => {
-    getVolunteers().then(setVolunteers);
+  const getAllTheCauses = () => {
+    getCauses().then(setCauses);
   };
 
   const getAllTheOrganizations = () => {
@@ -31,46 +31,41 @@ export default function ViewCommunity() {
   };
 
   useEffect(() => {
-    getAllTheVolunteers();
+    getAllTheCauses();
     getAllTheOrganizations();
   }, []);
 
   return (
     <div>
       <div className="org-container">
-        <h1 className="text-center mt-3">Meet Other Volunteers Who Share Your Passion</h1>
+        <h1 className="text-center mt-3">Popular Causes and Organizations</h1>
       </div>
 
-      {/* Volunteers Section */}
+      {/* Causes Section */}
       <div style={{ position: 'relative' }}>
-        <h2 className="text-center mt-3">Volunteers</h2>
-        <Button className="scroll-arrow left" onClick={() => scrollLeft(volunteerScrollRef)}>
+        <h2 className="text-center mt-3">Causes</h2>
+        <Button className="scroll-arrow left" onClick={() => scrollLeft(causeScrollRef)}>
           ‹
         </Button>
-        <div ref={volunteerScrollRef} className="d-flex flex-row px-3" style={{ overflowX: 'auto', scrollBehavior: 'smooth' }}>
-          {volunteers.map((volunteer) => (
-            <VolunteerCard key={volunteer.id} volunteerObj={volunteer} onUpdate={getAllTheVolunteers} />
+        <div ref={causeScrollRef} className="d-flex flex-row px-3" style={{ overflowX: 'auto', scrollBehavior: 'smooth' }}>
+          {causes.map((cause) => (
+            <CauseCard key={cause.id} causeObj={cause} onUpdate={getAllTheCauses} />
           ))}
         </div>
-        <Button className="scroll-arrow right" onClick={() => scrollRight(volunteerScrollRef)}>
+        <Button className="scroll-arrow right" onClick={() => scrollRight(causeScrollRef)}>
           ›
         </Button>
       </div>
 
-      <br />
-
       {/* Organizations Section */}
-      <div className="org-container">
-        <h1 className="text-center mt-3">Find Organizations That Support Your Causes</h1>
-      </div>
       <div style={{ position: 'relative', marginTop: '3rem' }}>
         <h2 className="text-center mt-5">Organizations</h2>
         <Button className="scroll-arrow left" onClick={() => scrollLeft(orgScrollRef)}>
           ‹
         </Button>
         <div ref={orgScrollRef} className="d-flex flex-row px-3" style={{ overflowX: 'auto', scrollBehavior: 'smooth' }}>
-          {organizations.map((organization) => (
-            <OrganizationCard key={organization.id} organizationObj={organization} onUpdate={getAllTheOrganizations} />
+          {organizations.map((org) => (
+            <OrganizationCard key={org.id} organizationObj={org} onUpdate={getAllTheOrganizations} />
           ))}
         </div>
         <Button className="scroll-arrow right" onClick={() => scrollRight(orgScrollRef)}>
@@ -80,3 +75,5 @@ export default function ViewCommunity() {
     </div>
   );
 }
+
+export default Home;
